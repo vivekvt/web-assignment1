@@ -1,13 +1,15 @@
 import React from 'react';
 import Layout from '../component/Layout';
 import { Box, Button, Chip, Tab, Tabs, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <Layout>
       <Tabs
         // value={value}
-        // onChange={handleChange}
+        onChange={() => navigate('/products')}
         variant="scrollable"
         scrollButtons="auto"
       >
@@ -38,9 +40,11 @@ export default function HomePage() {
           <Typography color="Background" variant="h6" sx={{ my: 1 }}>
             Apple Vision Pro
           </Typography>
-          <Button variant="contained" size="small">
-            Buy Now
-          </Button>
+          <Link to="/products">
+            <Button variant="contained" size="small">
+              Buy Now
+            </Button>
+          </Link>
         </Box>
       </Box>
       What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and

@@ -4,6 +4,7 @@ import { Box, Paper, Tab, Tabs } from '@mui/material';
 import Login from '../component/auth/Login';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import SignUp from '../component/auth/SignUp';
 
 export default function LoginPage() {
   const auth = useSelector((state: any) => state?.user);
@@ -27,7 +28,7 @@ export default function LoginPage() {
               <Tab label="Sign Up" />
             </Tabs>
           </Box>
-          <Box sx={{ px: 2 }}>{value === 1 ? <Login /> : <Login />}</Box>
+          <Box sx={{ px: 2 }}>{value === 1 ? <SignUp /> : <Login />}</Box>
         </Paper>
       </Box>
     </Layout>

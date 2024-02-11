@@ -1,7 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -15,14 +14,14 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { appConfig } from '../data/appConfig';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AccountCircle, ShoppingCart } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import * as localforage from 'localforage';
 import { removeSession } from '../redux/store';
 
 const drawerWidth = 240;
-const navItems = ['Products', 'About', 'Contact'];
+const navItems = ['Products'];
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -32,7 +31,7 @@ export default function Navbar() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -40,9 +39,14 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localforage.removeItem('authSession').then(function (value) {
-      dispatch(removeSession());
-    });
+    const answer = confirm('Are you sure you want to logout?');
+    if (answer) {
+      localforage.removeItem('authSession').then(function (value) {
+        dispatch(removeSession());
+      });
+    } else {
+      setAnchorEl(null);
+    }
   };
 
   const drawer = (
@@ -76,6 +80,7 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
             variant="h6"
             component="div"
@@ -84,8 +89,9 @@ export default function Navbar() {
               textAlign: { xs: 'center', sm: 'left' },
             }}
           >
-            {appConfig.title}
+            <Link to="/">{appConfig.title}</Link>
           </Typography>
+
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Link to={`/${item?.toLowerCase()}`}>
@@ -116,8 +122,9 @@ export default function Navbar() {
                   horizontal: 'left',
                 }}
               >
-                <MenuItem onClick={() => setAnchorEl(null)}>Profile</MenuItem>
-                <MenuItem onClick={() => setAnchorEl(null)}>My Orders</MenuItem>
+                <MenuItem onClick={() => navigate('/profile')}>
+                  Profile
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </>

@@ -1,13 +1,26 @@
 import { Button, TextField } from '@mui/material';
 import React from 'react';
 import InputGroup from '../InputGroup';
-import { useLogin } from '../../hooks/authHook';
+import { useSignUp } from '../../hooks/authHook';
 
-export default function Login() {
-  const { onSubmit, onChange, state, loading } = useLogin();
+export default function SignUp() {
+  const { onSubmit, onChange, state, loading } = useSignUp();
 
   return (
     <form onSubmit={onSubmit}>
+      <InputGroup>
+        <TextField
+          size="small"
+          fullWidth
+          label="Name"
+          required
+          type="text"
+          name="name"
+          value={state.name}
+          onChange={onChange}
+          disabled={loading}
+        />
+      </InputGroup>
       <InputGroup>
         <TextField
           size="small"
