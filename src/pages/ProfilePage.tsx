@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const { profile, onChange, onAddressChange, onSubmit, loading } =
     useUpdateProfile();
   return (
-    <Layout>
+    <Layout authRequired>
       <Container maxWidth="md">
         <BreadCrumbs>
           <Typography>Profile</Typography>

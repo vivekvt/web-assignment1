@@ -1,7 +1,16 @@
 import React from 'react';
 import Layout from '../component/Layout';
-import { Box, Button, Chip, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import ProductGrid from '../component/ProductGrid';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -47,15 +56,23 @@ export default function HomePage() {
           </Link>
         </Box>
       </Box>
-      What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and
-      typesetting industry. Lorem Ipsum has been the industry's standard dummy
-      text ever since the 1500s, when an unknown printer took a galley of type
-      and scrambled it to make a type specimen book. It has survived not only
-      five centuries, but also the leap into electronic typesetting, remaining
-      essentially unchanged. It was popularised in the 1960s with the release of
-      Letraset sheets containing Lorem Ipsum passages, and more recently with
-      desktop publishing software like Aldus PageMaker including versions of
-      Lorem Ipsum.
+      <Container maxWidth="md" sx={{ py: 2 }}>
+        <ProductGrid showHeader headerTitle="New Launch" limit={4} />
+        <Box sx={{ my: 2 }}>
+          <ProductGrid
+            showHeader
+            headerTitle="Airpods"
+            category="airpods"
+            limit={4}
+          />
+        </Box>
+        <ProductGrid
+          showHeader
+          headerTitle="Newly Launched Mac"
+          category="mac"
+          limit={4}
+        />
+      </Container>
     </Layout>
   );
 }

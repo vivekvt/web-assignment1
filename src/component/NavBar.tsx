@@ -42,12 +42,12 @@ export default function Navbar() {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const answer = confirm('Are you sure you want to logout?');
     if (answer) {
-      localforage.removeItem('authSession').then(function (value) {
-        dispatch(removeSession());
-      });
+      await localforage.removeItem('authSession');
+      await localforage.removeItem('cart');
+      dispatch(removeSession());
     } else {
       setAnchorEl(null);
     }

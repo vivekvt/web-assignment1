@@ -1,9 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import Layout from '../component/Layout';
 import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Paper,
   Table,
@@ -15,21 +20,31 @@ import {
   Typography,
 } from '@mui/material';
 import BreadCrumbs from '../component/BreadCrumbs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ICart, calculateCartTotal, useUpdateCart } from '../hooks/cart';
 import { Delete, Edit } from '@mui/icons-material';
 import QuantityInput from '../component/QuantityInput';
 import { IProfile } from '../hooks/profile';
 import { Link } from 'react-router-dom';
+import * as localforage from 'localforage';
+import { updateCart } from '../redux/store';
 
 export default function CartPage() {
   const auth: any = useSelector((state: any) => state?.user);
+  const [modal, setModal] = useState(false);
   const { removeProduct, changeQuantity } = useUpdateCart();
   const cart: ICart[] = auth?.cart;
   const userProfile: IProfile = auth?.session;
+  const dispatch = useDispatch();
+
+  const handleCheckout = async () => {
+    await localforage.removeItem('cart');
+    dispatch(updateCart([]));
+    setModal(true);
+  };
 
   return (
-    <Layout>
+    <Layout authRequired>
       <Container maxWidth="md" sx={{ pb: 2 }}>
         <BreadCrumbs>
           <Typography>Cart</Typography>
@@ -83,7 +98,11 @@ export default function CartPage() {
                   <TableCell></TableCell>
                   <TableCell>${calculateCartTotal(cart)}</TableCell>
                   <TableCell>
-                    <Button size="small" variant="contained">
+                    <Button
+                      size="small"
+                      variant="contained"
+                      onClick={handleCheckout}
+                    >
                       Checkout
                     </Button>
                   </TableCell>
@@ -119,6 +138,24 @@ export default function CartPage() {
             </Link>
           </Box>
         )}
+        <Dialog
+          open={modal}
+          onClose={() => setModal(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Your order has been placed successfully
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              You will receive order confirmation shortly on your email
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setModal(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </Layout>
   );

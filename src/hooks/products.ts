@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import { IProduct, products as productsData } from '../data/products';
 
-export const useGetProducts = (category?: string) => {
+export const useGetProducts = (category?: string, limit?: number) => {
   const [products, setProduct] = useState<IProduct[] | []>(productsData);
 
   useEffect(() => {
+    let newProducts: any = productsData;
     if (category) {
-      let newProducts: any = productsData.find((p) =>
-        p.category.includes(category)
+      newProducts = productsData?.filter((p) =>
+        p?.category?.includes(category)
       );
-      setProduct(newProducts);
     }
-  }, [category]);
+    if (limit) {
+      newProducts = newProducts?.slice(0, limit);
+    }
+    setProduct(newProducts);
+  }, [category, limit]);
 
   return products;
 };

@@ -16,7 +16,7 @@ export const products: IProduct[] = [
     description: 'iPhone 15 Pro Max',
     price: 1999,
     tags: ['iphone', 'apple', 'mobile'],
-    category: ['mac'],
+    category: ['iphone'],
     stock: 100,
     imageUrl: '/products/iphone/iphone-15-pro-max.jpg',
   },

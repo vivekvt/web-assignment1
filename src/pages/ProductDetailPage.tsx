@@ -8,6 +8,7 @@ import { ShoppingCart } from '@mui/icons-material';
 import { useAddToCart } from '../hooks/cart';
 import InputGroup from '../component/InputGroup';
 import QuantityInput from '../component/QuantityInput';
+import ProductGrid from '../component/ProductGrid';
 
 export default function ProductDetailPage() {
   let { productId } = useParams();
@@ -22,7 +23,7 @@ export default function ProductDetailPage() {
           <Link to="/products">
             <Typography>Products</Typography>
           </Link>
-          <Typography>{productId}</Typography>
+          <Typography>{product?.title || productId}</Typography>
         </BreadCrumbs>
         <Paper variant="outlined" sx={{ p: 2 }}>
           <Grid container spacing={2}>
@@ -84,6 +85,14 @@ export default function ProductDetailPage() {
             </Grid>
           </Grid>
         </Paper>
+        <Box my={1}>
+          <ProductGrid
+            showHeader
+            headerTitle="Similar Products"
+            category={product?.category?.[0]}
+            limit={4}
+          />
+        </Box>
       </Container>
     </Layout>
   );
