@@ -1,7 +1,7 @@
 import * as localforage from 'localforage';
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSession } from '../redux/store';
+import { setSession, updateCart } from '../redux/store';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -9,6 +9,11 @@ export const useAuth = () => {
     localforage.getItem('authSession').then(function (value: any) {
       if (value?.email) {
         dispatch(setSession(value));
+        localforage.getItem('cart').then((cartItems: any) => {
+          if (cartItems?.length > 0) {
+            dispatch(updateCart(cartItems));
+          }
+        });
       }
     });
   }, []);

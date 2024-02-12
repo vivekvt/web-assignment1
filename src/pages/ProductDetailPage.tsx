@@ -5,16 +5,21 @@ import { Box, Button, Container, Grid, Paper, Typography } from '@mui/material';
 import BreadCrumbs from '../component/BreadCrumbs';
 import { useGetProductById } from '../hooks/products';
 import { ShoppingCart } from '@mui/icons-material';
+import { useAddToCart } from '../hooks/cart';
+import InputGroup from '../component/InputGroup';
+import QuantityInput from '../component/QuantityInput';
 
 export default function ProductDetailPage() {
   let { productId } = useParams();
   const product = useGetProductById(productId);
+  const { addToCart, alreadyInCart, quantity, setQuantity } =
+    useAddToCart(product);
 
   return (
     <Layout>
       <Container maxWidth="md">
         <BreadCrumbs>
-          <Link to="products">
+          <Link to="/products">
             <Typography>Products</Typography>
           </Link>
           <Typography>{productId}</Typography>
@@ -48,13 +53,33 @@ export default function ProductDetailPage() {
                   -10%
                 </Typography>
               </Typography>
-              <Button
-                size="small"
-                variant="contained"
-                startIcon={<ShoppingCart />}
-              >
-                Add To Card
-              </Button>
+              <InputGroup>
+                {alreadyInCart ? (
+                  <Link to="/cart">
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="warning"
+                      startIcon={<ShoppingCart />}
+                    >
+                      Go to Cart
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <QuantityInput value={quantity} onChange={setQuantity} />
+                    <Button
+                      sx={{ mt: 1 }}
+                      onClick={addToCart}
+                      size="small"
+                      variant="contained"
+                      startIcon={<ShoppingCart />}
+                    >
+                      Add To Card
+                    </Button>
+                  </>
+                )}
+              </InputGroup>
               <Typography>{product?.description}</Typography>
             </Grid>
           </Grid>

@@ -16,7 +16,7 @@ import { appConfig } from '../data/appConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { AccountCircle, ShoppingCart } from '@mui/icons-material';
-import { Menu, MenuItem } from '@mui/material';
+import { Badge, Menu, MenuItem } from '@mui/material';
 import * as localforage from 'localforage';
 import { removeSession } from '../redux/store';
 
@@ -26,6 +26,10 @@ const navItems = ['Products'];
 export default function Navbar() {
   const dispatch = useDispatch();
   const auth = useSelector((state: any) => state?.user);
+  const [shakeCart, setShakeCart] = React.useState({
+    quantity: 0,
+    shake: false,
+  });
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -48,6 +52,18 @@ export default function Navbar() {
       setAnchorEl(null);
     }
   };
+
+  React.useEffect(() => {
+    if (shakeCart.quantity < auth.cart?.length) {
+      setShakeCart({ quantity: auth.cart?.length, shake: true });
+      setTimeout(() => {
+        setShakeCart((oldState) => ({
+          ...oldState,
+          shake: false,
+        }));
+      }, 500);
+    }
+  }, [auth.cart]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -80,16 +96,16 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-
           <Typography
             variant="h6"
             component="div"
             sx={{
               flexGrow: 1,
-              textAlign: { xs: 'center', sm: 'left' },
             }}
           >
-            <Link to="/">{appConfig.title}</Link>
+            <Link to="/" style={{ color: 'inherit' }}>
+              {appConfig.title}
+            </Link>
           </Typography>
 
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -106,9 +122,15 @@ export default function Navbar() {
               <IconButton color="inherit" onClick={handleClick}>
                 <AccountCircle />
               </IconButton>
-              <IconButton color="inherit">
-                <ShoppingCart />
-              </IconButton>
+              {/* <ShakeHorizontal fixed={false} fixedStop="false" freez={true}> */}
+              <Link to="/cart" style={{ color: 'inherit' }}>
+                <IconButton color="inherit">
+                  <Badge badgeContent={auth?.cart?.length} color="secondary">
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+              </Link>
+              {/* </ShakeHorizontal> */}
               <Menu
                 anchorEl={anchorEl}
                 open={open}

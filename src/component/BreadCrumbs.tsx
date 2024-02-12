@@ -10,12 +10,8 @@ interface IBreadCrumbs {
 export default function BreadCrumbs({ children }: IBreadCrumbs) {
   return (
     <Breadcrumbs sx={{ py: 1 }} aria-label="breadcrumb">
-      <RouterLink to="/">
-        <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="CaptionText"
-        >
+      <RouterLink to="/" style={{ color: 'inherit' }}>
+        <Link underline="hover" sx={{ display: 'flex', alignItems: 'center' }}>
           <Home sx={{ mr: 0.5 }} fontSize="inherit" />
           iKWC
         </Link>

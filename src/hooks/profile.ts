@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSession } from '../redux/store';
 
-interface IProfile {
+export interface IProfile {
   name: string;
   email: string;
   address: IAddress;
